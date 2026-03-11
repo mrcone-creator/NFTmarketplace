@@ -6,44 +6,32 @@
 'use strict';
 
 // ─────────────────────────────────────
-//  CONSTANTS
+//  BASE CATALOG (デフォルト値)
 // ─────────────────────────────────────
-const ETH_JPY = 400000;   // 1 ETH  = ¥400,000 (demo)
-const USDT_JPY = 150;      // 1 USDT = ¥150      (demo)
-
-const NFT_CATALOG = [
+const NFT_BASE = [
     {
         id: 'silver', name: 'Silver NFT', tier: 'SILVER', emoji: '🥈',
         apr: 18, priceJPY: 500000, maxSupply: 100,
-        priceETH: +(500000 / ETH_JPY).toFixed(4),
-        priceUSDT: Math.round(500000 / USDT_JPY),
-        quarterlyRewardUSDT: Math.round(500000 * 0.18 / 4 / USDT_JPY),  // 375 USDT
         color: '#94A3B8', accentColor: '#CBD5E1',
         bgGradient: 'linear-gradient(135deg,#1e293b,#334155,#64748b)',
-        description: '年利18%のUSDT報酬を四半期ごとに受け取れるエントリーNFT。100枚限定発行。',
-        features: ['年利 18% APR', '四半期USDT配当', '100枚限定'],
+        description: '年利{APR}%のUSDT報酬を四半期ごとに受け取れるエントリーNFT。{MAX}枚限定発行。',
+        featuresTemplate: ['年利 {APR}% APR', '四半期USDT配当', '{MAX}枚限定'],
     },
     {
         id: 'gold', name: 'Gold NFT', tier: 'GOLD', emoji: '🥇',
         apr: 30, priceJPY: 1000000, maxSupply: 100,
-        priceETH: +(1000000 / ETH_JPY).toFixed(4),
-        priceUSDT: Math.round(1000000 / USDT_JPY),
-        quarterlyRewardUSDT: Math.round(1000000 * 0.30 / 4 / USDT_JPY), // 500 USDT
         color: '#F59E0B', accentColor: '#FCD34D',
         bgGradient: 'linear-gradient(135deg,#451a03,#92400e,#d97706)',
-        description: '年利30%の高利回り。ゴールドNFT保有者への四半期USDT配当。100枚限定。',
-        features: ['年利 30% APR', '四半期USDT配当', '100枚限定'],
+        description: '年利{APR}%の高利回り。ゴールドNFT保有者への四半期USDT配当。{MAX}枚限定。',
+        featuresTemplate: ['年利 {APR}% APR', '四半期USDT配当', '{MAX}枚限定'],
     },
     {
         id: 'platina', name: 'Platina NFT', tier: 'PLATINA', emoji: '💎',
         apr: 36, priceJPY: 2000000, maxSupply: 50,
-        priceETH: +(2000000 / ETH_JPY).toFixed(4),
-        priceUSDT: Math.round(2000000 / USDT_JPY),
-        quarterlyRewardUSDT: Math.round(2000000 * 0.36 / 4 / USDT_JPY), // 1200 USDT
         color: '#A78BFA', accentColor: '#DDD6FE',
         bgGradient: 'linear-gradient(135deg,#1e1b4b,#3730a3,#7c3aed)',
-        description: '最高利回り年利36%。プラチナ保有者専用の高額USDT配当。50枚限定プレミアム。',
-        features: ['年利 36% APR', '四半期USDT配当', '50枚限定 (プレミアム)'],
+        description: '最高利回り年利{APR}%。プラチナ保有者専用の高額USDT配当。{MAX}枚限定プレミアム。',
+        featuresTemplate: ['年利 {APR}% APR', '四半期USDT配当', '{MAX}枚限定 (プレミアム)'],
     },
 ];
 
@@ -52,7 +40,43 @@ const STORAGE = {
     PURCHASES: 'nftm_purchases',
     SUPPLY: 'nftm_nft_supply',
     ACTIVITY: 'nftm_activity',
+    NFT_CFG: 'nftm_nft_config',   // admin config key
 };
+
+// ─────────────────────────────────────
+//  DYNAMIC CATALOG — merges admin settings
+// ─────────────────────────────────────
+/**
+ * Returns a live NFT catalog by merging NFT_BASE with whatever
+ * the admin saved in localStorage (nftm_nft_config).
+ * Called fresh on every render so changes appear immediately.
+ */
+function getEffectiveCatalog() {
+    let adminCfg = {};
+    try { adminCfg = JSON.parse(localStorage.getItem(STORAGE.NFT_CFG) || '{}'); } catch (e) { }
+    const ethJpy = adminCfg.ethJpy || 400000;
+    const usdtJpy = adminCfg.usdtJpy || 150;
+
+    return NFT_BASE.map(base => {
+        const override = adminCfg[base.id] || {};
+        const priceJPY = override.priceJPY || base.priceJPY;
+        const maxSupply = override.maxSupply || base.maxSupply;
+        const apr = override.apr || base.apr;
+        const priceETH = +(priceJPY / ethJpy).toFixed(4);
+        const priceUSDT = Math.round(priceJPY / usdtJpy);
+        const quarterlyRewardUSDT = Math.round(priceJPY * apr / 100 / 4 / usdtJpy);
+        // Replace template tokens in description and features
+        const description = base.description
+            .replace(/{APR}/g, apr)
+            .replace(/{MAX}/g, maxSupply.toLocaleString());
+        const features = base.featuresTemplate.map(f =>
+            f.replace(/{APR}/g, apr).replace(/{MAX}/g, maxSupply.toLocaleString()));
+        return {
+            ...base, priceJPY, maxSupply, apr, priceETH, priceUSDT,
+            quarterlyRewardUSDT, description, features
+        };
+    });
+}
 
 // ─────────────────────────────────────
 //  STATE
@@ -106,7 +130,7 @@ function renderMarketplace() {
     if (!grid) return;
     const supply = getSupply();
 
-    grid.innerHTML = NFT_CATALOG.map(nft => {
+    grid.innerHTML = getEffectiveCatalog().map(nft => {
         const sold = (supply[nft.id]?.sold || 0);
         const remaining = nft.maxSupply - sold;
         const soldOut = remaining <= 0;
@@ -163,7 +187,7 @@ function renderMarketplace() {
 // ─────────────────────────────────────
 function initPurchase(nftType) {
     if (!state.wallet) { openWalletModal(); showToast('info', '🦊', 'まずウォレットを接続してください'); return; }
-    const nft = NFT_CATALOG.find(n => n.id === nftType);
+    const nft = getEffectiveCatalog().find(n => n.id === nftType);
     if (!nft) return;
     const supply = getSupply();
     if ((supply[nftType]?.sold || 0) >= nft.maxSupply) { showToast('error', '🚫', 'このNFTは売り切れです'); return; }
@@ -193,7 +217,7 @@ function closePurchaseConfirmModal(e) {
 
 function executePurchase(nftType) {
     closePurchaseConfirmModal();
-    const nft = NFT_CATALOG.find(n => n.id === nftType);
+    const nft = getEffectiveCatalog().find(n => n.id === nftType);
     if (!nft) return;
     openProcessingModal(`${nft.name} (¥${nft.priceJPY.toLocaleString()}) の購入を処理しています`);
     setTimeout(() => updateProcessingModal('⛓️', 'ブロックチェーン確認中...', 'Ethereumネットワークで承認を待っています'), 1200);
@@ -280,7 +304,7 @@ function renderMyCollection() {
     noWallet?.classList.add('hidden');
     if (state.purchases.length === 0) { grid.innerHTML = ''; empty?.classList.remove('hidden'); return; }
     empty?.classList.add('hidden');
-    const nftMap = Object.fromEntries(NFT_CATALOG.map(n => [n.id, n]));
+    const nftMap = Object.fromEntries(getEffectiveCatalog().map(n => [n.id, n]));
     grid.innerHTML = state.purchases.map(p => {
         const def = nftMap[p.nftType] || {};
         const distCount = (p.distributions || []).length;
