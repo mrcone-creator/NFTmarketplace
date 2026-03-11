@@ -4,583 +4,334 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="NFT Marketplace — 唯一無二のデジタルアートを発見・購入。MetaMask対応のプレミアムNFTマーケット。" />
-    <title>NFT Marketplace — デジタルアートの新時代</title>
+    <title>NFT Marketplace — プレミアムNFTコレクション</title>
+    <meta name="description" content="Silver・Gold・Platinaの3種プレミアムNFT。保有するだけで四半期ごとにUSDT報酬を獲得。" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap"
+        rel="stylesheet" />
     <link rel="stylesheet" href="styles.css" />
-    <style>
-        /* NFT color palettes for generated artwork */
-        .nft-bg-1 {
-            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460, #533483);
-        }
-
-        .nft-bg-2 {
-            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-        }
-
-        .nft-bg-3 {
-            background: linear-gradient(135deg, #1f1c2c, #928dab);
-        }
-
-        .nft-bg-4 {
-            background: linear-gradient(135deg, #093028, #237a57);
-        }
-
-        .nft-bg-5 {
-            background: linear-gradient(135deg, #3a1c71, #d76d77, #ffaf7b);
-        }
-
-        .nft-bg-6 {
-            background: linear-gradient(135deg, #000428, #004e92);
-        }
-
-        .nft-bg-7 {
-            background: linear-gradient(135deg, #2c3e50, #fd746c);
-        }
-
-        .nft-bg-8 {
-            background: linear-gradient(135deg, #243b55, #141e30);
-        }
-
-        .nft-bg-9 {
-            background: linear-gradient(135deg, #4a00e0, #8e2de2);
-        }
-
-        .nft-bg-10 {
-            background: linear-gradient(135deg, #11998e, #38ef7d);
-        }
-    </style>
 </head>
 
 <body>
 
-    <!-- ============================================ -->
-    <!-- NAVBAR                                       -->
-    <!-- ============================================ -->
+    <!-- ==============================
+     NAVBAR
+================================ -->
     <nav class="navbar" id="navbar">
-        <div class="container">
-            <div class="navbar-inner">
-                <a href="#" class="navbar-logo" onclick="showPage('marketplace')">
-                    <div class="logo-icon">💎</div>
-                    <span>NFT<span class="logo-accent">Market</span></span>
+        <div class="navbar-inner">
+            <div class="navbar-brand" onclick="showPage('marketplace')">
+                <div class="brand-icon">💎</div>
+                <span>NFT<span style="color:var(--accent-purple-light)">Market</span></span>
+            </div>
+            <nav class="navbar-links" role="navigation">
+                <a href="#" class="nav-link active" id="nav-marketplace"
+                    onclick="showPage('marketplace');return false;">マーケット</a>
+                <a href="#" class="nav-link" id="nav-collection" onclick="showPage('collection');return false;">
+                    マイコレクション
+                    <span id="collectionBadge" class="nav-badge" style="display:none;">0</span>
                 </a>
-
-                <nav class="navbar-nav" role="navigation" aria-label="メインナビゲーション">
-                    <a href="#" class="nav-link active" id="nav-marketplace"
-                        onclick="showPage('marketplace'); return false;">マーケット</a>
-                    <a href="#" class="nav-link" id="nav-collection"
-                        onclick="showPage('collection'); return false;">マイコレクション</a>
-                    <a href="#" class="nav-link" id="nav-activity"
-                        onclick="showPage('activity'); return false;">アクティビティ</a>
-                    <a href="#" class="nav-link" id="nav-staking" onclick="showPage('staking'); return false;">💰
-                        ステーキング</a>
-                </nav>
-
-                <div class="navbar-actions">
-                    <button class="btn-wallet" id="connectWalletBtn" onclick="openWalletModal()">
-                        <span>🦊</span>
-                        <span id="walletBtnText">ウォレット接続</span>
-                    </button>
-                </div>
+                <a href="#" class="nav-link" id="nav-staking" onclick="showPage('staking');return false;">💰 ステーキング</a>
+                <a href="#" class="nav-link" id="nav-activity" onclick="showPage('activity');return false;">アクティビティ</a>
+            </nav>
+            <div class="navbar-actions">
+                <button class="btn btn-primary wallet-btn" id="connectWalletBtn" onclick="openWalletModal()">
+                    <span id="walletBtnText">ウォレット接続</span>
+                </button>
             </div>
         </div>
     </nav>
 
-    <!-- ============================================ -->
-    <!-- MARKETPLACE PAGE                             -->
-    <!-- ============================================ -->
+    <!-- ==============================
+     PAGE: MARKETPLACE
+================================ -->
     <div class="page-section active" id="page-marketplace">
 
-        <!-- HERO -->
-        <section class="hero">
-            <div class="hero-bg"></div>
-            <div class="hero-grid-lines"></div>
+        <!-- Hero -->
+        <section class="market-hero">
+            <div class="market-hero-bg"></div>
             <div class="container">
-                <div class="hero-inner">
-                    <!-- Left -->
-                    <div class="hero-content" data-animate="fade-up">
-                        <div class="hero-badge">
-                            <span>✨</span>
-                            <span>プレミアムNFTマーケット</span>
-                        </div>
-                        <h1 class="hero-title">
-                            デジタルアートの<br>
-                            <span class="text-gradient">新しい時代</span>へ
-                        </h1>
-                        <p class="hero-description">
-                            唯一無二のNFT作品を発見し、MetaMaskで簡単購入。
-                            運営が厳選したプレミアムコレクションをあなたのウォレットに。
-                        </p>
-                        <div class="hero-actions">
-                            <button class="btn btn-primary btn-lg"
-                                onclick="document.getElementById('marketplace-section').scrollIntoView({behavior:'smooth'})">
-                                <span>🎨</span> 作品を探す
-                            </button>
-                            <button class="btn btn-secondary btn-lg" onclick="openWalletModal()">
-                                <span>🦊</span> ウォレット接続
-                            </button>
-                        </div>
-                        <div class="hero-stats">
-                            <div class="hero-stat">
-                                <div class="value text-gradient" id="stat-nfts">0</div>
-                                <div class="label">NFT作品</div>
-                            </div>
-                            <div class="hero-stat">
-                                <div class="value text-gradient">ETH</div>
-                                <div class="label">対応チェーン</div>
-                            </div>
-                            <div class="hero-stat">
-                                <div class="value text-gradient" id="stat-users">0</div>
-                                <div class="label">コレクター</div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Right: Featured NFT -->
-                    <div class="hero-nft-showcase">
-                        <div class="orb orb-1"></div>
-                        <div class="orb orb-2"></div>
-                        <div class="orb orb-3"></div>
-                        <div class="featured-nft-card" id="featuredNFTCard">
-                            <div class="nft-badge-featured">🔥 Featured</div>
-                            <div class="featured-nft-img nft-bg-5" id="featuredNFTImg">
-                                <span id="featuredNFTEmoji" style="font-size:6rem;">🌌</span>
-                            </div>
-                            <div class="featured-nft-info">
-                                <div class="featured-nft-name" id="featuredNFTName">Cosmic Genesis #001</div>
-                                <div class="featured-nft-creator" id="featuredNFTCreator">by NFT Marketplace Official
-                                </div>
-                                <div class="featured-nft-price-row">
-                                    <div>
-                                        <div class="price-label">現在の価格</div>
-                                        <div class="price-value text-gradient" id="featuredNFTPrice">0.85 ETH</div>
-                                        <div class="price-usd" id="featuredNFTPriceUSD">≈ ¥ 340,000</div>
-                                    </div>
-                                    <button class="btn btn-primary btn-sm" id="featuredBuyBtn"
-                                        onclick="openFeaturedNFT()">購入する</button>
-                                </div>
-                            </div>
-                        </div>
+                <div class="market-hero-content">
+                    <div class="hero-label">🏆 プレミアムNFTコレクション</div>
+                    <h1 class="hero-title">保有するだけで<br><span class="text-gradient">USDT収益</span>を獲得</h1>
+                    <p class="hero-sub">Silver / Gold / Platina の3種類の限定NFT。<br>四半期ごとに購入価格に応じたUSDT報酬を受け取れます。</p>
+                    <div class="hero-badges">
+                        <span class="hero-badge">🥈 18% APR</span>
+                        <span class="hero-badge">🥇 30% APR</span>
+                        <span class="hero-badge">💎 36% APR</span>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- MARKETPLACE GRID -->
-        <section class="section" id="marketplace-section">
+        <!-- NFT Catalog -->
+        <section class="catalog-section">
             <div class="container">
-                <div class="section-header">
-                    <span class="section-label">🎨 コレクション</span>
-                    <h2 class="section-title">プレミアム NFT <span class="text-gradient">マーケットプレイス</span></h2>
-                    <p class="section-desc">運営が厳選した唯一無二のデジタルアート作品をご覧ください</p>
-                </div>
-
-                <!-- Filter Bar -->
-                <div class="filter-bar">
-                    <div class="search-input-wrap">
-                        <span class="search-icon">🔍</span>
-                        <input type="text" id="searchInput" class="search-input" placeholder="NFTを検索..."
-                            oninput="filterNFTs()" />
-                    </div>
-                    <div class="filter-tabs" role="tablist">
-                        <button class="filter-tab active" role="tab" onclick="setCategory('all', this)"
-                            id="tab-all">すべて</button>
-                        <button class="filter-tab" role="tab" onclick="setCategory('art', this)"
-                            id="tab-art">アート</button>
-                        <button class="filter-tab" role="tab" onclick="setCategory('collectible', this)"
-                            id="tab-collectible">コレクタブル</button>
-                        <button class="filter-tab" role="tab" onclick="setCategory('music', this)"
-                            id="tab-music">ミュージック</button>
-                        <button class="filter-tab" role="tab" onclick="setCategory('gaming', this)"
-                            id="tab-gaming">ゲーム</button>
-                    </div>
-                    <select class="sort-select" id="sortSelect" onchange="sortNFTs()">
-                        <option value="newest">最新順</option>
-                        <option value="price-asc">価格: 安い順</option>
-                        <option value="price-desc">価格: 高い順</option>
-                        <option value="popular">人気順</option>
-                    </select>
-                </div>
-
-                <!-- NFT Grid -->
-                <div class="nft-grid" id="nftGrid" role="list" aria-label="NFTリスト">
-                    <!-- Cards injected by JS -->
-                </div>
-
-                <div id="emptyState" class="empty-state hidden">
-                    <div class="empty-state-icon">🔍</div>
-                    <div class="empty-state-title">NFTが見つかりません</div>
-                    <div class="empty-state-desc">検索条件を変更してお試しください</div>
+                <div class="nft-catalog-grid" id="nftCatalogGrid">
+                    <!-- rendered by app.js -->
                 </div>
             </div>
         </section>
 
+        <!-- How it works -->
+        <section class="howto-section">
+            <div class="container">
+                <h2 class="section-title">📖 仕組み</h2>
+                <div class="howto-grid">
+                    <div class="howto-card">
+                        <div class="howto-num">01</div>
+                        <div class="howto-icon">🦊</div>
+                        <div class="howto-title">ウォレット接続</div>
+                        <p class="howto-desc">MetaMask等のウォレットを接続します</p>
+                    </div>
+                    <div class="howto-card">
+                        <div class="howto-num">02</div>
+                        <div class="howto-icon">💳</div>
+                        <div class="howto-title">NFT購入</div>
+                        <p class="howto-desc">Silver・Gold・Platinaから選んで購入します</p>
+                    </div>
+                    <div class="howto-card">
+                        <div class="howto-num">03</div>
+                        <div class="howto-icon">🔒</div>
+                        <div class="howto-title">ステーキング開始</div>
+                        <p class="howto-desc">購入したNFTをステーキングして報酬を有効化します</p>
+                    </div>
+                    <div class="howto-card">
+                        <div class="howto-num">04</div>
+                        <div class="howto-icon">💰</div>
+                        <div class="howto-title">USDT受取</div>
+                        <p class="howto-desc">四半期ごとに管理者からUSDTが配布されます</p>
+                    </div>
+                </div>
+            </div>
+        </section>
     </div><!-- /page-marketplace -->
 
-    <!-- ============================================ -->
-    <!-- MY COLLECTION PAGE                           -->
-    <!-- ============================================ -->
+    <!-- ==============================
+     PAGE: MY COLLECTION
+================================ -->
     <div class="page-section" id="page-collection">
-        <div class="container">
-            <div class="section-header" style="padding-top: var(--space-3xl);">
-                <span class="section-label">🏆 マイコレクション</span>
-                <h2 class="section-title">所有している <span class="text-gradient">NFT</span></h2>
-                <p class="section-desc">あなたのウォレットに収録されたNFT作品</p>
+        <div class="page-header">
+            <div class="container">
+                <h2 class="page-title">🖼️ マイコレクション</h2>
             </div>
-            <div id="collectionGrid" class="nft-grid"></div>
-            <div id="collectionEmpty" class="empty-state hidden">
-                <div class="empty-state-icon">🎨</div>
-                <div class="empty-state-title">コレクションがありません</div>
-                <div class="empty-state-desc">マーケットプレイスでNFTを購入してコレクションを始めましょう！</div>
-                <button class="btn btn-primary mt-lg" onclick="showPage('marketplace')">マーケットへ</button>
-            </div>
-            <div id="collectionNoWallet" class="empty-state">
+        </div>
+        <div class="container" style="padding-top:32px; padding-bottom:80px;">
+            <!-- No Wallet -->
+            <div class="empty-state" id="collectionNoWallet">
                 <div class="empty-state-icon">🦊</div>
-                <div class="empty-state-title">ウォレットを接続してください</div>
-                <div class="empty-state-desc">コレクションを表示するにはウォレット接続が必要です</div>
-                <button class="btn btn-primary mt-lg" onclick="openWalletModal()">ウォレット接続</button>
+                <div class="empty-state-title">ウォレット未接続</div>
+                <p class="empty-state-desc">NFTを確認するにはウォレットを接続してください</p>
+                <button class="btn btn-primary" onclick="openWalletModal()">ウォレット接続</button>
             </div>
+            <!-- No NFTs -->
+            <div class="empty-state hidden" id="collectionEmpty">
+                <div class="empty-state-icon">🎨</div>
+                <div class="empty-state-title">NFTがありません</div>
+                <p class="empty-state-desc">マーケットでNFTを購入するとここに表示されます</p>
+                <button class="btn btn-primary" onclick="showPage('marketplace')">マーケットへ</button>
+            </div>
+            <!-- Grid -->
+            <div class="collection-grid" id="collectionGrid"></div>
         </div>
-    </div>
+    </div><!-- /page-collection -->
 
-    <!-- ============================================ -->
-    <!-- ACTIVITY PAGE                                -->
-    <!-- ============================================ -->
-    <div class="page-section" id="page-activity">
-        <div class="container">
-            <div class="section-header" style="padding-top: var(--space-3xl);">
-                <span class="section-label">📊 アクティビティ</span>
-                <h2 class="section-title">取引 <span class="text-gradient">履歴</span></h2>
-                <p class="section-desc">最近のマーケットプレイスの取引記録</p>
-            </div>
-            <div id="activityList" class="activity-list"></div>
-        </div>
-        <style>
-            .activity-list {
-                display: flex;
-                flex-direction: column;
-                gap: var(--space-sm);
-                max-width: 800px;
-                margin: 0 auto;
-            }
-
-            .activity-row {
-                display: flex;
-                align-items: center;
-                gap: var(--space-lg);
-                padding: var(--space-md) var(--space-lg);
-                background: var(--bg-card);
-                border: 1px solid var(--border-card);
-                border-radius: var(--radius-lg);
-                transition: var(--transition);
-            }
-
-            .activity-row:hover {
-                background: var(--bg-card-hover);
-                border-color: var(--border-active);
-            }
-
-            .activity-emoji {
-                font-size: 1.5rem;
-                width: 42px;
-                text-align: center;
-                flex-shrink: 0;
-            }
-
-            .activity-details {
-                flex: 1;
-            }
-
-            .activity-name {
-                font-weight: 700;
-                font-size: 0.9rem;
-            }
-
-            .activity-meta {
-                font-size: 0.78rem;
-                color: var(--text-muted);
-                margin-top: 2px;
-            }
-
-            .activity-price {
-                font-weight: 800;
-                font-family: var(--font-mono);
-                font-size: 0.95rem;
-            }
-
-            .activity-price .text-gradient {
-                display: inline;
-            }
-
-            .activity-time {
-                font-size: 0.75rem;
-                color: var(--text-muted);
-                flex-shrink: 0;
-            }
-        </style>
-    </div>
-
-    <!-- ============================================ -->
-    <!-- NFT DETAIL MODAL                             -->
-    <!-- ============================================ -->
-    <div class="modal-overlay" id="nftModal" role="dialog" aria-modal="true" aria-labelledby="modalNFTName"
-        onclick="closeModal(event)">
-        <div class="modal" id="nftModalContent">
-            <div class="modal-inner">
-                <div class="modal-img-side nft-bg-5" id="modalImgSide">
-                    <button class="modal-close" onclick="closeNFTModal()" aria-label="閉じる">✕</button>
-                    <span id="modalEmoji" style="font-size:7rem; position:relative; z-index:1;">🌌</span>
-                </div>
-                <div class="modal-info-side">
-                    <div>
-                        <h2 class="modal-nft-name" id="modalNFTName">NFT Name</h2>
-                        <div class="modal-nft-creator" id="modalNFTCreator">by NFT Marketplace Official</div>
-                    </div>
-                    <div class="modal-price-box">
-                        <div class="price-label">現在の価格</div>
-                        <div class="modal-price-eth" id="modalPriceETH">0.00 ETH</div>
-                        <div class="modal-price-usd" id="modalPriceUSD">≈ ¥ 0</div>
-                    </div>
-                    <div>
-                        <div
-                            style="font-size:0.78rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:var(--space-sm);">
-                            説明</div>
-                        <div class="modal-description" id="modalDescription">--</div>
-                    </div>
-                    <div>
-                        <div
-                            style="font-size:0.78rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:var(--space-sm);">
-                            プロパティ</div>
-                        <div class="modal-properties" id="modalProperties"></div>
-                    </div>
-                    <div>
-                        <button class="modal-buy-btn" id="modalBuyBtn" onclick="buyNFT()">
-                            <span id="buyBtnText">💎 今すぐ購入</span>
-                        </button>
-                        <div id="buyStatusMsg"
-                            style="text-align:center; font-size:0.8rem; color:var(--text-muted); margin-top:8px;"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ============================================ -->
-    <!-- WALLET MODAL                                 -->
-    <!-- ============================================ -->
-    <div class="modal-overlay" id="walletModal" role="dialog" aria-modal="true" aria-labelledby="walletModalTitle"
-        onclick="closeWalletModal(event)">
-        <div class="modal wallet-modal" id="walletModalContent">
-            <div class="modal-header">
-                <div style="font-size:2.5rem; margin-bottom:var(--space-md);">🔐</div>
-                <h2 class="modal-nft-name" id="walletModalTitle" style="font-size:1.3rem; margin-bottom:8px;">ウォレットを選択
-                </h2>
-                <p style="font-size:0.85rem; color:var(--text-muted);">NFTの購入・管理にウォレット接続が必要です</p>
-            </div>
-            <div class="modal-body">
-                <div class="wallet-options" style="margin-top: var(--space-lg);">
-                    <button class="wallet-option" id="metamaskBtn" onclick="connectWallet('metamask')">
-                        <div class="wallet-option-icon" style="background: rgba(249,115,22,0.15);">🦊</div>
-                        <div>
-                            <div>MetaMask</div>
-                            <div class="wallet-option-desc">最も人気のEthereumウォレット</div>
-                        </div>
-                        <span style="margin-left:auto; color:var(--text-muted);">→</span>
-                    </button>
-                    <button class="wallet-option" id="walletconnectBtn" onclick="connectWallet('walletconnect')">
-                        <div class="wallet-option-icon" style="background: rgba(59,130,246,0.15);">🔗</div>
-                        <div>
-                            <div>WalletConnect</div>
-                            <div class="wallet-option-desc">QRコードでモバイルウォレット接続</div>
-                        </div>
-                        <span style="margin-left:auto; color:var(--text-muted);">→</span>
-                    </button>
-                    <button class="wallet-option" id="coinbaseBtn" onclick="connectWallet('coinbase')">
-                        <div class="wallet-option-icon" style="background: rgba(99,102,241,0.15);">🔵</div>
-                        <div>
-                            <div>Coinbase Wallet</div>
-                            <div class="wallet-option-desc">Coinbase公式ウォレット</div>
-                        </div>
-                        <span style="margin-left:auto; color:var(--text-muted);">→</span>
-                    </button>
-                </div>
-                <p style="text-align:center; font-size:0.75rem; color:var(--text-muted); margin-top:var(--space-lg);">
-                    ウォレット接続により利用規約に同意したことになります
-                </p>
-            </div>
-            <button class="modal-close" onclick="closeWalletModal()"
-                style="position:absolute; top:16px; right:16px;">✕</button>
-        </div>
-    </div>
-
-    <!-- ============================================ -->
-    <!-- PURCHASE CONFIRM MODAL                       -->
-    <!-- ============================================ -->
-    <div class="modal-overlay" id="purchaseModal" role="dialog" aria-modal="true" onclick="closePurchaseModal(event)">
-        <div class="modal" style="max-width:420px;" id="purchaseModalContent">
-            <div style="padding:var(--space-2xl); text-align:center;">
-                <div id="purchaseAnimation" style="font-size:3.5rem; margin-bottom:var(--space-lg);">⏳</div>
-                <h2 style="font-size:1.3rem; margin-bottom:var(--space-sm);" id="purchaseTitle">取引を確認中...</h2>
-                <p style="font-size:0.875rem; color:var(--text-secondary); margin-bottom:var(--space-xl);"
-                    id="purchaseDesc">
-                    MetaMaskで取引を承認してください
-                </p>
-                <div id="purchaseTxHash"
-                    style="font-size:0.78rem; color:var(--text-muted); font-family:var(--font-mono); word-break:break-all; display:none;">
-                </div>
-                <button class="btn btn-secondary mt-lg" id="purchaseCloseBtn" onclick="closePurchaseModal()"
-                    style="display:none;">閉じる</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- ============================================ -->
-    <!-- TOAST CONTAINER                              -->
-    <!-- ============================================ -->
-    <div class="toast-container" id="toastContainer" role="alert" aria-live="polite"></div>
-
-    <!-- ============================================ -->
-    <!-- STAKING PAGE                                 -->
-    <!-- ============================================ -->
+    <!-- ==============================
+     PAGE: STAKING
+================================ -->
     <div class="page-section" id="page-staking">
-        <div class="container">
-            <div class="section-header" style="padding-top: var(--space-3xl);">
-                <span class="section-label">💰 ステーキング</span>
-                <h1 class="section-title">ETH <span class="text-gradient">ステーキング</span></h1>
-                <p class="section-desc">ETHをステーキングしてUSDTを獲得。最大36% APRの高利回り運用プログラム</p>
+        <div class="page-header">
+            <div class="container">
+                <h2 class="page-title">💰 ステーキング</h2>
+            </div>
+        </div>
+        <div class="container" style="padding-top:32px; padding-bottom:80px;">
+
+            <!-- Stats -->
+            <div class="stk-stats-row">
+                <div class="stk-stat-card">
+                    <div class="stk-stat-icon">🎴</div>
+                    <div class="stk-stat-val" id="stkMyNFTs">0</div>
+                    <div class="stk-stat-lbl">保有NFT数</div>
+                </div>
+                <div class="stk-stat-card">
+                    <div class="stk-stat-icon">🔒</div>
+                    <div class="stk-stat-val" id="stkStakedNFTs">0</div>
+                    <div class="stk-stat-lbl">運用中NFT</div>
+                </div>
+                <div class="stk-stat-card">
+                    <div class="stk-stat-icon">💵</div>
+                    <div class="stk-stat-val" id="stkQReward">0 USDT</div>
+                    <div class="stk-stat-lbl">次回配当合計</div>
+                </div>
+                <div class="stk-stat-card">
+                    <div class="stk-stat-icon">📈</div>
+                    <div class="stk-stat-val" id="stkYearReward">0 USDT</div>
+                    <div class="stk-stat-lbl">年間報酬合計</div>
+                </div>
             </div>
 
-            <!-- Stats Bar -->
-            <div class="staking-stats-bar">
-                <div class="staking-stat-card">
-                    <div class="staking-stat-value text-gradient" id="sTVL">0.000</div>
-                    <div class="staking-stat-label">Total Value Locked (ETH)</div>
-                </div>
-                <div class="staking-stat-card">
-                    <div class="staking-stat-value" style="color:#10b981;" id="sTotalRewards">0</div>
-                    <div class="staking-stat-label">配布予定報酬 (USDT)</div>
-                </div>
-                <div class="staking-stat-card">
-                    <div class="staking-stat-value" style="color:#f59e0b;">36%</div>
-                    <div class="staking-stat-label">最高 APR</div>
-                </div>
-                <div class="staking-stat-card">
-                    <div class="staking-stat-value" style="color:#a855f7;" id="sStakerCount">0</div>
-                    <div class="staking-stat-label">ステーカー数</div>
-                </div>
+            <!-- Info box -->
+            <div class="stk-info-box">
+                <strong>📋 ステーキングについて</strong>
+                <ul>
+                    <li>NFTを購入後、ステーキングを開始することで四半期報酬が有効になります</li>
+                    <li>報酬はUSDTで四半期ごと（3ヶ月に1回）に管理者から手動配布されます</li>
+                    <li>報酬額は購入時の価格に基づくAPRで計算されます</li>
+                </ul>
             </div>
 
-            <!-- Grid: Selection + Form -->
-            <div id="stakingContent"
-                style="display:grid; grid-template-columns:1fr 360px; gap:var(--space-xl); align-items:start;">
-                <!-- Left -->
-                <div>
-                    <!-- Step 1: APR -->
-                    <div class="step-label">① APRプランを選択</div>
-                    <div class="apr-tiers-grid" id="aprTiersGrid"></div>
+            <!-- No Wallet -->
+            <div class="empty-state" id="stakingNoWallet">
+                <div class="empty-state-icon">🦊</div>
+                <div class="empty-state-title">ウォレット未接続</div>
+                <p class="empty-state-desc">ステーキングするにはウォレットを接続してください</p>
+                <button class="btn btn-primary" onclick="openWalletModal()">ウォレット接続</button>
+            </div>
+            <!-- No NFTs -->
+            <div class="empty-state hidden" id="stakingEmpty">
+                <div class="empty-state-icon">🔒</div>
+                <div class="empty-state-title">ステーキング可能なNFTがありません</div>
+                <p class="empty-state-desc">まずマーケットでNFTを購入してください</p>
+                <button class="btn btn-primary" onclick="showPage('marketplace')">マーケットへ</button>
+            </div>
+            <!-- NFT List -->
+            <div id="stakingNFTList"></div>
 
-                    <!-- Step 2: Period -->
-                    <div class="step-label" style="margin-top:var(--space-lg);">② ステーキング期間を選択</div>
-                    <div class="period-selector" id="periodSelector" style="margin-bottom:var(--space-2xl);"></div>
-
-                    <!-- My Stakes -->
-                    <div class="step-label" style="margin-top:var(--space-xl);">📋 マイステーキング</div>
-                    <div id="myStakesList" class="my-stakes-list"></div>
-                    <div id="myStakesEmpty" class="empty-state hidden">
-                        <div class="empty-state-icon">💰</div>
-                        <div class="empty-state-title">ステーキングはありません</div>
-                        <div class="empty-state-desc">APRプランと期間を選択してステーキングを始めましょう</div>
-                    </div>
-                    <div id="myStakesNoWallet" class="empty-state">
-                        <div class="empty-state-icon">🦊</div>
-                        <div class="empty-state-title">ウォレットを接続してください</div>
-                        <div class="empty-state-desc">ステーキングにはウォレット接続が必要です</div>
-                        <button class="btn btn-primary mt-lg" onclick="openWalletModal()">ウォレット接続</button>
-                    </div>
-                </div>
-
-                <!-- Right: Form -->
-                <div>
-                    <div class="staking-form-card">
-                        <div class="staking-form-title">⚡ ステーキング設定</div>
-
-                        <!-- Summary of selections -->
-                        <div id="stakeSelectionSummary"
-                            style="margin-bottom:var(--space-md); padding:var(--space-sm) var(--space-md); background:var(--bg-secondary); border-radius:var(--radius-md); font-size:0.8rem; color:var(--text-muted); display:flex; gap:8px; flex-wrap:wrap;">
-                            <span id="sSelAPR">APR: 未選択</span>
-                            <span style="opacity:0.3;">•</span>
-                            <span id="sSelPeriod">期間: 未選択</span>
-                        </div>
-
-                        <!-- Amount -->
-                        <div
-                            style="font-size:0.75rem; font-weight:600; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:6px;">
-                            ステーキング額</div>
-                        <div class="staking-amount-wrap">
-                            <input type="number" id="stakeAmountInput" class="staking-amount-input" placeholder="0.00"
-                                min="0.001" step="0.001" oninput="updateStakeCalc()" />
-                            <span class="staking-amount-unit">ETH</span>
-                        </div>
-                        <div id="stakeMinWarning"
-                            style="font-size:0.72rem; color:#f59e0b; margin-bottom:var(--space-sm); display:none;">⚠️
-                            最小額: <span id="stakeMinAmt">0.1</span> ETH</div>
-
-                        <!-- Reward Calculator -->
-                        <div class="reward-calc" id="rewardCalc">
-                            <div class="reward-row"><span class="rk">元本 USDT</span><span class="rv"
-                                    id="calcPrincipal">—</span></div>
-                            <div class="reward-row"><span class="rk">APR</span><span class="rv" id="calcAPR">—</span>
-                            </div>
-                            <div class="reward-row"><span class="rk">期間</span><span class="rv" id="calcPeriod">—</span>
-                            </div>
-                            <div class="reward-row"><span class="rk">報酬 USDT</span><span class="rv" id="calcReward"
-                                    style="color:#10b981;">—</span></div>
-                            <div class="reward-row reward-total"
-                                style="margin-top:4px; padding-top:10px; border-top:1px solid var(--border-subtle);">
-                                <span class="rk" style="font-weight:700;">💎 総受取額 USDT</span><span class="rv"
-                                    id="calcTotal">—</span></div>
-                            <div class="reward-row"><span class="rk">満期日</span><span class="rv" id="calcMaturity"
-                                    style="font-size:0.78rem;">—</span></div>
-                        </div>
-
-                        <button class="btn btn-primary w-full" id="submitStakeBtn" onclick="submitStake()"
-                            style="width:100%; padding:14px; font-size:1rem; border-radius:var(--radius-lg);" disabled>
-                            <span id="submitStakeText">💰 ステーキングする</span>
-                        </button>
-                        <div style="text-align:center; font-size:0.72rem; color:var(--text-muted); margin-top:8px;"
-                            id="stakeSubmitHint">
-                            APR・期間・金額を選択してください
-                        </div>
-
-                        <div
-                            style="margin-top:var(--space-lg); padding-top:var(--space-md); border-top:1px solid var(--border-subtle); font-size:0.72rem; color:var(--text-muted); line-height:1.8;">
-                            <div>• 払い出しはすべて <strong style="color:var(--text-secondary);">USDT</strong> で行われます</div>
-                            <div>• 期間途中の解約はできません</div>
-                            <div>• ETH/USDT レート: 3,000 USDT (デモ)</div>
-                        </div>
-                    </div>
-                </div>
-            </div><!-- /grid -->
         </div>
     </div><!-- /page-staking -->
 
-    <!-- ============================================ -->
-    <!-- FOOTER                                       -->
-    <!-- ============================================ -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-inner">
-                <div>
-                    <div class="footer-logo text-gradient">💎 NFTMarket</div>
-                    <div class="footer-copy" style="margin-top:4px;">管理者発行・ユーザー購入型NFTマーケット</div>
-                </div>
-                <div class="footer-links">
-                    <a href="#" class="footer-link">プライバシーポリシー</a>
-                    <a href="#" class="footer-link">利用規約</a>
-                    <a href="admin/" class="footer-link">管理者パネル</a>
-                </div>
-                <div class="footer-copy">© 2026 NFT Marketplace. All rights reserved.</div>
+    <!-- ==============================
+     PAGE: ACTIVITY
+================================ -->
+    <div class="page-section" id="page-activity">
+        <div class="page-header">
+            <div class="container">
+                <h2 class="page-title">📋 アクティビティ</h2>
             </div>
         </div>
-    </footer>
+        <div class="container" style="padding-top:32px; padding-bottom:80px;">
+            <div class="activity-card">
+                <div id="activityList"></div>
+            </div>
+        </div>
+    </div><!-- /page-activity -->
+
+    <!-- ==============================
+     MODAL: WALLET
+================================ -->
+    <div class="modal-overlay" id="walletModal" onclick="closeWalletModal(event)">
+        <div class="modal-box">
+            <div class="modal-header">
+                <div class="modal-title">🦊 ウォレット接続</div>
+                <button class="modal-close" onclick="closeWalletModal()" aria-label="閉じる">✕</button>
+            </div>
+            <div class="modal-body">
+                <p style="color:var(--text-secondary);font-size:0.875rem;margin-bottom:20px;">接続するウォレットを選択してください</p>
+                <div class="wallet-options">
+                    <button class="wallet-option-btn" id="btn-metamask" onclick="connectWallet('metamask')">
+                        <span class="wallet-option-icon">🦊</span>
+                        <div>
+                            <div class="wallet-option-name">MetaMask</div>
+                            <div class="wallet-option-sub">最も人気のあるウォレット</div>
+                        </div>
+                    </button>
+                    <button class="wallet-option-btn" id="btn-walletconnect" onclick="connectWallet('walletconnect')">
+                        <span class="wallet-option-icon">🔗</span>
+                        <div>
+                            <div class="wallet-option-name">WalletConnect</div>
+                            <div class="wallet-option-sub">モバイル対応ウォレット</div>
+                        </div>
+                    </button>
+                    <button class="wallet-option-btn" id="btn-coinbase" onclick="connectWallet('coinbase')">
+                        <span class="wallet-option-icon">🔵</span>
+                        <div>
+                            <div class="wallet-option-name">Coinbase Wallet</div>
+                            <div class="wallet-option-sub">Coinbase公式ウォレット</div>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==============================
+     MODAL: PURCHASE CONFIRM
+================================ -->
+    <div class="modal-overlay" id="purchaseConfirmModal" onclick="closePurchaseConfirmModal(event)">
+        <div class="modal-box" style="max-width:480px;">
+            <div class="modal-header">
+                <div class="modal-title">💳 購入確認</div>
+                <button class="modal-close" onclick="closePurchaseConfirmModal()" aria-label="閉じる">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="pc-nft-preview">
+                    <div class="pc-nft-emoji" id="pcEmoji">💎</div>
+                    <div>
+                        <div class="pc-nft-name" id="pcName">—</div>
+                        <div class="pc-nft-apr" id="pcAPR">—</div>
+                    </div>
+                </div>
+                <table class="pc-table">
+                    <tr>
+                        <td>購入価格</td>
+                        <td><strong id="pcPriceJPY">—</strong></td>
+                    </tr>
+                    <tr>
+                        <td>ETH相当</td>
+                        <td id="pcPriceETH">—</td>
+                    </tr>
+                    <tr>
+                        <td>USDT相当</td>
+                        <td id="pcPriceUSDT">—</td>
+                    </tr>
+                    <tr>
+                        <td>四半期報酬</td>
+                        <td><strong style="color:#10b981;" id="pcReward">—</strong></td>
+                    </tr>
+                    <tr>
+                        <td>年間報酬</td>
+                        <td><strong style="color:#10b981;" id="pcAnnual">—</strong></td>
+                    </tr>
+                </table>
+                <p style="font-size:0.78rem;color:var(--text-muted);margin:16px 0 0;line-height:1.6;">
+                    ※ 報酬はUSDTで四半期ごとに管理者から配布されます<br>
+                    ※ ETH/USDT換算はデモレートを使用（1ETH=¥400,000 / 1USDT=¥150）
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closePurchaseConfirmModal()">キャンセル</button>
+                <button class="btn btn-primary" id="pcConfirmBtn">購入する</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==============================
+     MODAL: PURCHASE PROCESSING
+================================ -->
+    <div class="modal-overlay" id="purchaseModal">
+        <div class="modal-box" style="max-width:420px;text-align:center;">
+            <div class="modal-body" style="padding:40px 32px;">
+                <div class="purchase-anim" id="purchaseAnimation">⏳</div>
+                <div class="modal-title" id="purchaseTitle" style="margin:16px 0 8px;">処理中...</div>
+                <p style="color:var(--text-secondary);font-size:0.875rem;" id="purchaseDesc"></p>
+                <div id="purchaseTxHash"
+                    style="display:none;margin-top:12px;font-family:var(--font-mono);font-size:0.72rem;color:var(--text-muted);">
+                </div>
+                <button class="btn btn-primary" id="purchaseCloseBtn" style="display:none;margin-top:24px;width:100%;"
+                    onclick="closePurchaseModal()">閉じる</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST -->
+    <div class="toast-container" id="toastContainer" role="alert" aria-live="polite"></div>
+
+    <!-- Admin Link -->
+    <div style="text-align:center;padding:20px;background:var(--bg-secondary);border-top:1px solid var(--border-card);">
+        <a href="admin/index.html" style="color:var(--text-muted);font-size:0.78rem;text-decoration:none;">⚙️ 管理者パネル</a>
+    </div>
 
     <script src="app.js"></script>
 </body>

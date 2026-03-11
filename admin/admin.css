@@ -1241,3 +1241,240 @@ textarea {
         grid-template-columns: 1fr;
     }
 }
+
+/* ── New v2 styles ── */
+
+/* Status badges */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 700;
+}
+
+.status-badge.published {
+    background: rgba(16, 185, 129, .12);
+    color: #10b981;
+    border: 1px solid rgba(16, 185, 129, .25);
+}
+
+.status-badge.draft {
+    background: rgba(100, 116, 139, .12);
+    color: #94a3b8;
+    border: 1px solid rgba(100, 116, 139, .25);
+}
+
+.status-badge.archived {
+    background: rgba(124, 58, 237, .12);
+    color: #a78bfa;
+    border: 1px solid rgba(124, 58, 237, .25);
+}
+
+.font-mono {
+    font-family: var(--font-mono);
+}
+
+.mb-md {
+    margin-bottom: 16px;
+}
+
+/* NFT Config Preview */
+.nft-config-preview {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border-card);
+    border-radius: var(--radius-md);
+    padding: 12px 16px;
+    margin-top: 12px;
+}
+
+.config-preview-row {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    flex-wrap: wrap;
+    font-size: 0.82rem;
+}
+
+.config-preview-row span {
+    color: var(--text-muted);
+}
+
+.config-preview-row strong {
+    margin-left: 6px;
+}
+
+/* NFT breakdown dashboard */
+.breakdown-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.breakdown-row:last-child {
+    border: none;
+}
+
+.breakdown-emoji {
+    font-size: 1.8rem;
+    flex-shrink: 0;
+}
+
+.breakdown-info {
+    flex: 1;
+}
+
+.breakdown-name {
+    font-size: 0.875rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+.breakdown-bar-wrap {
+    height: 5px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 999px;
+    margin-bottom: 4px;
+}
+
+.breakdown-bar {
+    height: 100%;
+    border-radius: 999px;
+}
+
+.breakdown-meta {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+}
+
+.breakdown-stat {
+    font-size: 0.9rem;
+    font-weight: 700;
+    font-family: var(--font-mono);
+}
+
+/* Activity items (dashboard) */
+.activity-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border-subtle);
+    font-size: 0.82rem;
+}
+
+.activity-item:last-child {
+    border: none;
+}
+
+.activity-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.activity-dot.mint {
+    background: #a78bfa;
+}
+
+.activity-dot.sale {
+    background: #10b981;
+}
+
+.activity-dot.edit {
+    background: #06b6d4;
+}
+
+.activity-body {
+    flex: 1;
+    color: var(--text-secondary);
+}
+
+.activity-time {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+}
+
+/* Setting rows */
+.setting-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border-subtle);
+    gap: 16px;
+}
+
+.setting-row:last-child {
+    border: none;
+}
+
+.setting-info {
+    flex: 1;
+}
+
+.setting-name {
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-bottom: 3px;
+}
+
+.setting-desc {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+}
+
+/* Toast */
+.toast-container {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.toast {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-card);
+    border-radius: var(--radius-md);
+    padding: 12px 16px;
+    font-size: 0.85rem;
+    box-shadow: var(--shadow-card);
+    opacity: 0;
+    transform: translateX(24px);
+    transition: 0.35s ease;
+    min-width: 260px;
+    max-width: 360px;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.toast-success {
+    border-left: 3px solid var(--accent-green);
+}
+
+.toast-error {
+    border-left: 3px solid var(--accent-red);
+}
+
+.toast-info {
+    border-left: 3px solid var(--accent-cyan);
+}
+
+.toast-icon {
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
