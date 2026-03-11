@@ -112,6 +112,11 @@ function renderMarketplace() {
         const soldOut = remaining <= 0;
         const pct = Math.round(sold / nft.maxSupply * 100);
         const owned = state.purchases.filter(p => p.nftType === nft.id).length;
+        // Counter triggers when sold > 30% (remaining < 70%)
+        const threshold70 = remaining < nft.maxSupply * 0.7;
+        const isCritical = remaining <= nft.maxSupply * 0.1;  // <= 10% remaining
+        const isWarning = remaining <= nft.maxSupply * 0.3;  // <= 30% remaining
+        const counterClass = soldOut ? '' : isCritical ? 'counter-critical' : isWarning ? 'counter-warning' : 'counter-low';
 
         return `
     <div class="nft-catalog-card" id="card-${nft.id}">
@@ -119,6 +124,7 @@ function renderMarketplace() {
         <div class="nft-catalog-emoji">${nft.emoji}</div>
         <div class="nft-tier-badge" style="color:${nft.accentColor};border-color:${nft.accentColor}50;">${nft.tier}</div>
         ${soldOut ? '<div class="sold-out-overlay">SOLD OUT</div>' : ''}
+        ${threshold70 && !soldOut ? `<div class="nft-remaining-counter ${counterClass}"><span class="counter-icon">${isCritical ? '🔥' : '⚡'}</span><span class="counter-num">${remaining}</span><span class="counter-unit">枚</span></div>` : ''}
       </div>
       <div class="nft-catalog-body">
         <div class="nft-catalog-name">${nft.name}</div>
@@ -134,7 +140,10 @@ function renderMarketplace() {
         <div class="nft-supply-block">
           <div class="nft-supply-top"><span>販売数</span><span>${sold} / ${nft.maxSupply} 枚</span></div>
           <div class="nft-supply-bar-wrap"><div class="nft-supply-bar-fill" style="width:${pct}%;background:${nft.color};"></div></div>
-          <div class="nft-supply-rem">残り <strong style="color:${nft.accentColor};">${remaining}</strong> 枚</div>
+          ${threshold70 && !soldOut
+                ? `<div class="nft-supply-alert ${counterClass}">⚠️ 残り <strong>${remaining}</strong> 枚！お早めに</div>`
+                : `<div class="nft-supply-rem">残り <strong style="color:${nft.accentColor};">${remaining}</strong> 枚</div>`
+            }
         </div>
         <div class="nft-price-block">
           <div class="nft-price-jpy">¥${nft.priceJPY.toLocaleString()}</div>

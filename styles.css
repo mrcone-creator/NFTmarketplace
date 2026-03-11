@@ -444,6 +444,125 @@ h3 {
     letter-spacing: 0.1em;
 }
 
+/* ── Remaining Stock Counter (triggers at < 70%) ── */
+.nft-remaining-counter {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-weight: 900;
+    font-family: var(--font-mono);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+    animation: counterPulse 1.8s ease-in-out infinite;
+}
+
+.counter-icon {
+    font-size: 1rem;
+}
+
+.counter-num {
+    font-size: 1.2rem;
+    line-height: 1;
+}
+
+.counter-unit {
+    font-size: 0.7rem;
+    align-self: flex-end;
+    margin-bottom: 2px;
+}
+
+.nft-remaining-counter.counter-low {
+    background: rgba(245, 158, 11, 0.85);
+    color: #fff;
+    border: 1px solid rgba(255, 200, 0, 0.6);
+}
+
+.nft-remaining-counter.counter-warning {
+    background: rgba(249, 115, 22, 0.9);
+    color: #fff;
+    border: 1px solid rgba(255, 140, 0, 0.6);
+}
+
+.nft-remaining-counter.counter-critical {
+    background: rgba(239, 68, 68, 0.95);
+    color: #fff;
+    border: 1px solid rgba(255, 80, 80, 0.6);
+    animation: counterPulseCritical 0.9s ease-in-out infinite;
+}
+
+@keyframes counterPulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+    }
+
+    50% {
+        transform: scale(1.06);
+        box-shadow: 0 4px 18px rgba(245, 158, 11, 0.5);
+    }
+}
+
+@keyframes counterPulseCritical {
+
+    0%,
+    100% {
+        transform: scale(1);
+        box-shadow: 0 2px 12px rgba(239, 68, 68, 0.5);
+    }
+
+    50% {
+        transform: scale(1.1);
+        box-shadow: 0 4px 22px rgba(239, 68, 68, 0.8);
+    }
+}
+
+/* Alert row under supply bar */
+.nft-supply-alert {
+    font-size: 0.78rem;
+    font-weight: 700;
+    margin-top: 4px;
+    padding: 5px 10px;
+    border-radius: var(--radius-sm);
+    animation: alertFade 1.5s ease-in-out infinite;
+}
+
+.nft-supply-alert.counter-low {
+    color: #f59e0b;
+    background: rgba(245, 158, 11, 0.1);
+    border: 1px solid rgba(245, 158, 11, 0.25);
+}
+
+.nft-supply-alert.counter-warning {
+    color: #f97316;
+    background: rgba(249, 115, 22, 0.1);
+    border: 1px solid rgba(249, 115, 22, 0.25);
+}
+
+.nft-supply-alert.counter-critical {
+    color: #ef4444;
+    background: rgba(239, 68, 68, 0.12);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+@keyframes alertFade {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.65;
+    }
+}
+
 .nft-catalog-body {
     padding: 24px;
 }

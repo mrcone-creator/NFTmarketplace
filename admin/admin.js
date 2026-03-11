@@ -240,7 +240,12 @@ function renderPurchasesPage(data = null) {
     <tr>
       <td><div style="display:flex;align-items:center;gap:8px;"><span style="font-size:1.3rem;">${p.emoji}</span><strong>${p.nftName}</strong></div></td>
       <td><span class="font-mono" style="font-size:0.78rem;">${p.tokenId}</span></td>
-      <td><span class="font-mono" style="font-size:0.75rem;color:var(--text-muted);">${shortAddr(p.wallet)}</span></td>
+      <td>
+        <div style="display:flex;align-items:center;gap:6px;">
+          <span class="font-mono" style="font-size:0.75rem;color:var(--text-muted);">${shortAddr(p.wallet)}</span>
+          <button class="copy-addr-btn" onclick="copyToClipboard('${p.wallet}', this)" title="ウォレットアドレスをコピー">📋</button>
+        </div>
+      </td>
       <td style="font-size:0.8rem;">${formatDate(p.purchasedAt)}</td>
       <td><strong>¥${(p.priceJPY || 0).toLocaleString()}</strong><br><span style="font-size:0.7rem;color:var(--text-muted);">${p.priceETH} ETH</span></td>
       <td><span style="color:${aprColor(p.apr)};font-weight:700;">${p.apr}%</span></td>
@@ -443,4 +448,76 @@ function showToast(type, icon, message, duration = 4000) {
     c.appendChild(t);
     requestAnimationFrame(() => requestAnimationFrame(() => t.classList.add('show')));
     setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 400); }, duration);
+}
+
+// ─────────────────────────────────────
+//  CLIPBOARD COPY
+// ─────────────────────────────────────
+function copyToClipboard(text, btn) {
+    if (!text || text === '—') { showToast('error', '❌', 'コピーするアドレスがありません'); return; }
+    navigator.clipboard.writeText(text).then(() => {
+        if (btn) {
+            const orig = btn.textContent;
+            btn.textContent = '✅';
+            btn.style.color = '#10b981';
+            setTimeout(() => { btn.textContent = orig; btn.style.color = ''; }, 2000);
+        }
+        showToast('success', '📋', `アドレスをコピーしました: ${text.slice(0, 10)}...`);
+    }).catch(() => {
+        // Fallback for older browsers
+        const ta = document.createElement('textarea');
+        ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+        document.body.appendChild(ta); ta.select();
+        try { document.execCommand('copy'); showToast('success', '📋', 'アドレスをコピーしました'); }
+        catch { showToast('error', '❌', 'コピーに失敗しました'); }
+        document.body.removeChild(ta);
+    });
+}
+
+// ─────────────────────────────────────
+//  PAYMENT RECEIVING ADDRESS
+// ─────────────────────────────────────
+const PA_KEY = 'nftm_payment_address';
+
+function loadPaymentAddress() {
+    const saved = localStorage.getItem(PA_KEY) || '';
+    setVal('paymentAddress', saved);
+    updatePaymentAddressCard(saved);
+}
+
+function savePaymentAddress() {
+    const addr = getVal('paymentAddress').trim();
+    if (!addr) { showToast('error', '❌', 'アドレスを入力してください'); return; }
+    if (!addr.startsWith('0x') || addr.length < 42) {
+        showToast('error', '❌', '有効なEthereumアドレスを入力してください（0xから始まる42文字）');
+        return;
+    }
+    localStorage.setItem(PA_KEY, addr);
+    updatePaymentAddressCard(addr);
+    showToast('success', '💾', '受け取りアドレスを保存しました');
+}
+
+function updatePaymentAddressCard(addr) {
+    const card = document.getElementById('paymentAddressCard');
+    const display = document.getElementById('paymentAddressDisplay');
+    if (!card || !display) return;
+    if (addr) {
+        display.textContent = addr;
+        card.style.display = 'block';
+    } else {
+        card.style.display = 'none';
+    }
+}
+
+function copyPaymentAddress() {
+    const addr = getVal('paymentAddress').trim() || localStorage.getItem(PA_KEY) || '';
+    if (!addr) { showToast('error', '❌', '受け取りアドレスが設定されていません'); return; }
+    copyToClipboard(addr, null);
+}
+
+// Auto-load payment address when NFT config page is shown
+const origRenderNFTConfigPage = window.renderNFTConfigPage || function () { };
+function renderNFTConfigPage() {
+    loadNFTConfig();
+    loadPaymentAddress();
 }

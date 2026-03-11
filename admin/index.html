@@ -242,6 +242,51 @@
                             </div>
                         </div>
 
+                        <!-- Payment Receiving Address -->
+                        <div class="admin-card mb-md" style="border-color:rgba(16,185,129,0.3);">
+                            <div class="admin-card-header" style="background:rgba(16,185,129,0.05);">
+                                <div class="admin-card-title">💳 NFT購入代金 受け取りアドレス</div>
+                                <span
+                                    style="font-size:0.75rem;color:var(--accent-green);font-weight:600;">ETH受け取り用</span>
+                            </div>
+                            <div class="admin-card-body">
+                                <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:16px;">
+                                    ユーザーがNFTを購入した際のETH送金先ウォレットアドレスを設定します。<br>
+                                    このアドレスをユーザーに通知してください。
+                                </p>
+                                <div class="form-group">
+                                    <label class="form-label">受け取りウォレットアドレス (ETH)</label>
+                                    <div style="display:flex;gap:8px;align-items:center;">
+                                        <input type="text" id="paymentAddress" class="form-input" placeholder="0x..."
+                                            style="font-family:var(--font-mono);font-size:0.85rem;" />
+                                        <button class="btn btn-secondary btn-sm" onclick="copyPaymentAddress()"
+                                            id="copyPayAddrBtn" title="コピー" style="flex-shrink:0;padding:10px 14px;">
+                                            📋
+                                        </button>
+                                    </div>
+                                    <div class="form-hint">例: 0x1234...abcd（Ethereum メインネット対応アドレス）</div>
+                                </div>
+                                <!-- Address display card -->
+                                <div id="paymentAddressCard"
+                                    style="display:none; margin-top:12px; background:rgba(16,185,129,0.06); border:1px solid rgba(16,185,129,0.2); border-radius:var(--radius-md); padding:16px;">
+                                    <div
+                                        style="font-size:0.72rem;color:var(--text-muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.06em;">
+                                        現在の受け取りアドレス</div>
+                                    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+                                        <div id="paymentAddressDisplay"
+                                            style="font-family:var(--font-mono);font-size:0.82rem;color:var(--accent-green);word-break:break-all;flex:1;">
+                                        </div>
+                                        <button class="btn btn-secondary btn-sm" onclick="copyPaymentAddress()"
+                                            style="flex-shrink:0;">📋 コピー</button>
+                                    </div>
+                                </div>
+                                <div style="display:flex;gap:10px;margin-top:16px;justify-content:flex-end;">
+                                    <button class="btn btn-primary btn-sm" onclick="savePaymentAddress()">💾
+                                        アドレスを保存</button>
+                                </div>
+                            </div>
+                        </div>
+
                         <div style="display:flex;gap:12px;justify-content:flex-end;">
                             <button class="btn btn-secondary" onclick="loadNFTConfig()">リセット</button>
                             <button class="btn btn-primary" onclick="saveNFTConfig()">💾 設定を保存</button>

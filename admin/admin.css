@@ -1478,3 +1478,26 @@ textarea {
     font-size: 1.1rem;
     flex-shrink: 0;
 }
+
+/* ── Wallet address copy button ── */
+.copy-addr-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+    background: transparent;
+    border: 1px solid transparent;
+    font-size: 0.78rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    opacity: 0.6;
+    flex-shrink: 0;
+}
+
+.copy-addr-btn:hover {
+    opacity: 1;
+    background: rgba(124, 58, 237, 0.12);
+    border-color: rgba(124, 58, 237, 0.3);
+}
